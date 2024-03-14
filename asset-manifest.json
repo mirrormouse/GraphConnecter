@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/GraphConnecter/static/css/main.d61de88d.css",
+    "main.js": "/GraphConnecter/static/js/main.d559f2d2.js",
+    "static/js/453.3ac6942c.chunk.js": "/GraphConnecter/static/js/453.3ac6942c.chunk.js",
+    "index.html": "/GraphConnecter/index.html",
+    "main.d61de88d.css.map": "/GraphConnecter/static/css/main.d61de88d.css.map",
+    "main.d559f2d2.js.map": "/GraphConnecter/static/js/main.d559f2d2.js.map",
+    "453.3ac6942c.chunk.js.map": "/GraphConnecter/static/js/453.3ac6942c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d61de88d.css",
+    "static/js/main.d559f2d2.js"
+  ]
+}
