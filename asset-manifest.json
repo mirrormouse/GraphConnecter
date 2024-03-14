@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/GraphConnecter/static/css/main.ed3b514a.css",
-    "main.js": "/GraphConnecter/static/js/main.49905858.js",
+    "main.css": "/GraphConnecter/static/css/main.81b62170.css",
+    "main.js": "/GraphConnecter/static/js/main.626bfdb3.js",
     "static/js/453.3ac6942c.chunk.js": "/GraphConnecter/static/js/453.3ac6942c.chunk.js",
     "index.html": "/GraphConnecter/index.html",
-    "main.ed3b514a.css.map": "/GraphConnecter/static/css/main.ed3b514a.css.map",
-    "main.49905858.js.map": "/GraphConnecter/static/js/main.49905858.js.map",
+    "main.81b62170.css.map": "/GraphConnecter/static/css/main.81b62170.css.map",
+    "main.626bfdb3.js.map": "/GraphConnecter/static/js/main.626bfdb3.js.map",
     "453.3ac6942c.chunk.js.map": "/GraphConnecter/static/js/453.3ac6942c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ed3b514a.css",
-    "static/js/main.49905858.js"
+    "static/css/main.81b62170.css",
+    "static/js/main.626bfdb3.js"
   ]
 }
