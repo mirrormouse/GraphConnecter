@@ -122,9 +122,10 @@ const GameBoard = () => {
     // NodeとTerminalの描画処理はここに含まれる
     return (
         <div className="gameBoardContainer">
+            <a href={readmeUrl} target="_blank" rel="noopener noreferrer">README</a>
             {/* <TotalCostDisplay totalCost={totalCost} limitCost={limitCost} /> */}
             <div className="gameBoard">
-                <a href={readmeUrl} target="_blank" rel="noopener noreferrer">README</a>
+
                 <svg width="100%" height="100%" viewBox={viewBox}>
                     <Head totalCost={totalCost} limitCost={limitCost} Point={Point} totalNode={totalNode} stageId={currentStageIndex} />
                     {edges.map(edge => (
