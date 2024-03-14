@@ -26,6 +26,7 @@ const GameBoard = () => {
 
     const [viewBox, setViewBox] = useState(stages[currentStageIndex].view);
 
+
     var totalNode = vertices.filter(vertex => vertex.type === 'node').length;
 
     useEffect(() => {
@@ -145,7 +146,12 @@ const GameBoard = () => {
 
             {showOverlay && (
                 <div className="overlay">
-                    <button className="nextStageButton" onClick={goToNextStage}>次のステージへ</button>
+                    {currentStageIndex < stages.length - 1 ? (
+                        <button className="nextStageButton" onClick={goToNextStage}>次のステージへ</button>
+                    ) : (
+                        <div className="gameCompleteMessage">現在登録されている {stages.length} ステージをすべてクリアしました！</div>
+                    )}
+
 
                     <button className="nextStageButton" onClick={resetCurrentStage}>再挑戦</button>
                 </div>

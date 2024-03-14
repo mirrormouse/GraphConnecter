@@ -33,6 +33,13 @@ html {
     align-items: flex-start;
 }
 
+.gameCompleteMessage {
+    color: black;
+    background-color: #beddff;
+    padding: 20px 40px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 
 
 
