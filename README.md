@@ -1,70 +1,32 @@
-# Getting Started with Create React App
+# 遊び方
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ゲームは以下のリンクで遊べます（現在全7ステージ）
 
-## Available Scripts
 
-In the project directory, you can run:
+エッジはクリック（タップ）でONとOFFを切りかえられます。
+全てのノードが電源（オレンジ色の四角）に繋がって赤色から青色に変化したらクリアです。
+ただし、エッジをONにするとエネルギーを消費します。エネルギーが0以上の状態で全てのノードを青色にしなければクリアにはなりません。
+エッジをOFFにするとその分のエネルギーは変換されます。
 
-### `npm start`
+# もっと遊ぶ
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+src/components/stages.jsに、各ステージの情報が記録されています。
+stagesリストの第i要素がステージ{i+1}に対応しており、各ステージの情報は以下のような辞書型データで与えられます。
+```
+    {
+        vertices: [
+            { id: 1, x: 100, y: 100, type: 'node' },
+            { id: 2, x: 200, y: 200, type: 'node' },
+            { id: 3, x: 300, y: 100, type: 'terminal' },
+            { id: 4, x: 200, y: 300, type: 'node' },
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+        ],
+        edges: [
+            { id: 1, from: 1, to: 2, cost: 1 },
+            { id: 2, from: 2, to: 3, cost: 3 },
+            { id: 3, from: 1, to: 3, cost: 2 },
+            { id: 4, from: 2, to: 4, cost: 2 },
+        ],
+        limitcost: 5,
+    },
+```

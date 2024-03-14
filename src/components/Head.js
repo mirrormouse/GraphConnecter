@@ -19,24 +19,24 @@ const Head = ({ totalCost, limitCost, Point, totalNode, stageId }) => {
                 ステージ: {stageId + 1}
             </motion.text>
             <motion.text
-                x={20}
-                y={70}
+                x={150}
+                y={35}
                 fill="black"
-                fontSize="36"
+                fontSize="24"
                 textAnchor="left"
                 style={{
                     pointerEvents: 'none',
                     userSelect: 'none', // 文字列が選択されないようにする
                 }}
             >
-                残額:
+                残りエネルギー:
                 <tspan fill={remaining < 0 ? "red" : "blue"}>{remaining}</tspan> {/* 数値部分の色を変更 */}
             </motion.text>
             <motion.text
                 x={150}
                 y={70}
                 fill="black"
-                fontSize="36"
+                fontSize="24"
                 textAnchor="left"
                 style={{
                     pointerEvents: 'none',
