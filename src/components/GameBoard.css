@@ -8,6 +8,7 @@ html {
     justify-content: center;
     align-items: center;
     margin: 0;
+    background-color: rgb(194, 255, 235);
 }
 
 .gameBoardContainer {
@@ -21,7 +22,7 @@ html {
     align-items: flex-start;
     /* 子要素は上から並べる */
     flex-direction: column;
-    background-color: rgb(194, 255, 235);
+
 }
 
 
