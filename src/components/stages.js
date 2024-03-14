@@ -1,4 +1,5 @@
 export const stages = [
+
     {
         vertices: [
             { id: 1, x: 100, y: 100, type: 'node' },

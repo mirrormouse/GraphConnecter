@@ -63,7 +63,6 @@ const GameBoard = () => {
 
     };
 
-
     const toggleEdgeActive = (edgeId) => {
         const updatedEdges = edges.map(edge => edge.id === edgeId ? { ...edge, active: !edge.active } : edge);
         setEdges(updatedEdges);
