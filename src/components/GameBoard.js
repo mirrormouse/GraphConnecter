@@ -10,28 +10,33 @@ import { stages } from './stages';
 import { useEffect } from 'react';
 
 
+
+
 const GameBoard = () => {
+
+    function addActiveProperty(datalist) {
+        return datalist.map(data => ({ ...data, active: false }));
+    }
 
     const [showOverlay, setShowOverlay] = useState(false);
 
     const [currentStageIndex, setCurrentStageIndex] = useState(0);
 
-    const [vertices, setVertices] = useState(stages[currentStageIndex].vertices);
+    const [vertices, setVertices] = useState(addActiveProperty(stages[currentStageIndex].vertices));
 
-    const [edges, setEdges] = useState(stages[currentStageIndex].edges);
+    const [edges, setEdges] = useState(addActiveProperty(stages[currentStageIndex].edges));
 
     const [limitCost, setLimitCost] = useState(stages[currentStageIndex].limitcost);
 
-    const [requiredPoints, setRequiredPoints] = useState(stages[currentStageIndex].requiredpoints);
-
-    const [viewBox, setViewBox] = useState(stages[currentStageIndex].view);
-
-
     var totalNode = vertices.filter(vertex => vertex.type === 'node').length;
+
+    //viewBoxはverticesの座標のx,yそれぞれの最大値に+100をしたものをmx, myとして、0,0,mx,myを指定する
+    var viewBox = "0 0 " + (Math.max(...vertices.map(vertex => vertex.x)) + 100) + " " + (Math.max(...vertices.map(vertex => vertex.y)) + 100);
 
     useEffect(() => {
         resetCurrentStage();
         totalNode = vertices.filter(vertex => vertex.type === 'node').length;
+        viewBox = "0 0 " + (Math.max(...vertices.map(vertex => vertex.x)) + 100) + " " + (Math.max(...vertices.map(vertex => vertex.y)) + 100);
     }, [currentStageIndex]);
 
     const resetStatus = () => {
@@ -42,11 +47,9 @@ const GameBoard = () => {
 
     const resetCurrentStage = () => {
         // 現在のステージのverticesとedgesを初期状態にリセット
-        setVertices(stages[currentStageIndex].vertices);
-        setEdges(stages[currentStageIndex].edges);
+        setVertices(addActiveProperty(stages[currentStageIndex].vertices));
+        setEdges(addActiveProperty(stages[currentStageIndex].edges));
         setLimitCost(stages[currentStageIndex].limitcost);
-        setRequiredPoints(stages[currentStageIndex].requiredpoints);
-        setViewBox(stages[currentStageIndex].view);
         // 必要に応じて他の状態もリセット
         resetStatus();
     };
@@ -109,7 +112,7 @@ const GameBoard = () => {
         setTotalCost(newTotalCost);
 
         // ゲームクリア判定
-        if (newTotalCost <= limitCost && activeNodeCount >= requiredPoints) {
+        if (newTotalCost <= limitCost && activeNodeCount >= totalNode) {
             setShowOverlay(true);
         }
 
