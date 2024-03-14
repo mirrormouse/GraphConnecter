@@ -1,27 +1,64 @@
 import React, { useState } from 'react';
 import Node from './Node';
 import Terminal from './Terminal';
+import Hub from './Hub';
 import Edge from './Edge';
 import './GameBoard.css';
+// import { motion } from 'framer-motion';
+import Head from './Head';
+import { stages } from './stages';
+import { useEffect } from 'react';
+
 
 const GameBoard = () => {
-    const [vertices, setVertices] = useState([
-        { id: 1, x: 100, y: 100, type: 'node', active: false },
-        { id: 2, x: 300, y: 200, type: 'node', active: false },
-        { id: 3, x: 200, y: 300, type: 'terminal', active: false }, // terminalも同様にactiveプロパティを持たせることが可能
-        { id: 4, x: 400, y: 200, type: 'terminal', active: false },
-        { id: 5, x: 500, y: 300, type: 'node', active: false },
-        { id: 6, x: 300, y: 100, type: 'node', active: false }
-    ]);
 
-    const [edges, setEdges] = useState([
-        { id: 1, from: 1, to: 2, active: false },
-        { id: 2, from: 2, to: 3, active: false },
-        { id: 3, from: 2, to: 4, active: false },
-        { id: 4, from: 4, to: 5, active: false },
-        { id: 5, from: 4, to: 6, active: false },
-        { id: 6, from: 6, to: 1, active: false }
-    ]);
+    const [showOverlay, setShowOverlay] = useState(false);
+
+    const [currentStageIndex, setCurrentStageIndex] = useState(0);
+
+    const [vertices, setVertices] = useState(stages[currentStageIndex].vertices);
+
+    const [edges, setEdges] = useState(stages[currentStageIndex].edges);
+
+    const [limitCost, setLimitCost] = useState(stages[currentStageIndex].limitcost);
+
+    const [requiredPoints, setRequiredPoints] = useState(stages[currentStageIndex].requiredpoints);
+
+    const [viewBox, setViewBox] = useState(stages[currentStageIndex].view);
+
+    var totalNode = vertices.filter(vertex => vertex.type === 'node').length;
+
+    useEffect(() => {
+        resetCurrentStage();
+        totalNode = vertices.filter(vertex => vertex.type === 'node').length;
+    }, [currentStageIndex]);
+
+    const resetStatus = () => {
+        setTotalCost(0);
+        setPoint(0);
+        setShowOverlay(false); // オーバーレイを非表示にする
+    }
+
+    const resetCurrentStage = () => {
+        // 現在のステージのverticesとedgesを初期状態にリセット
+        setVertices(stages[currentStageIndex].vertices);
+        setEdges(stages[currentStageIndex].edges);
+        setLimitCost(stages[currentStageIndex].limitcost);
+        setRequiredPoints(stages[currentStageIndex].requiredpoints);
+        setViewBox(stages[currentStageIndex].view);
+        // 必要に応じて他の状態もリセット
+        resetStatus();
+    };
+
+    const [totalCost, setTotalCost] = useState(0);
+
+    const [Point, setPoint] = useState(0);
+
+    const goToNextStage = () => {
+        setCurrentStageIndex(currentStageIndex + 1);
+
+    };
+
 
     const toggleEdgeActive = (edgeId) => {
         const updatedEdges = edges.map(edge => edge.id === edgeId ? { ...edge, active: !edge.active } : edge);
@@ -60,29 +97,60 @@ const GameBoard = () => {
             ...vertex,
             active: activeVerticesSet.has(vertex.id)
         }));
-
         setVertices(updatedVertices);
+        //activeなnodeの数を数える
+        const activeNodeCount = updatedVertices.filter(vertex => vertex.type === 'node' && vertex.active).length;
+        //Pointの更新
+        setPoint(activeNodeCount);
+
+        // 合計コストの更新
+        const newTotalCost = updatedEdges.filter(edge => edge.active).reduce((acc, edge) => acc + edge.cost, 0);
+        setTotalCost(newTotalCost);
+
+        // ゲームクリア判定
+        if (newTotalCost <= limitCost && activeNodeCount >= requiredPoints) {
+            setShowOverlay(true);
+        }
+
     };
 
     // NodeとTerminalの描画処理はここに含まれる
     return (
         <div className="gameBoardContainer">
-            <svg className="gameBoard">
-                {edges.map(edge => (
-                    <Edge
-                        key={edge.id}
-                        fromNode={vertices.find(v => v.id === edge.from)}
-                        toNode={vertices.find(v => v.id === edge.to)}
-                        active={edge.active}
-                        onClick={() => toggleEdgeActive(edge.id)}
-                    />
-                ))}
-                {vertices.map(vertex => vertex.type === 'node' ? (
-                    <Node key={vertex.id} x={vertex.x} y={vertex.y} active={vertex.active} />
-                ) : (
-                    <Terminal key={vertex.id} x={vertex.x} y={vertex.y} />
-                ))}
-            </svg>
+            {/* <TotalCostDisplay totalCost={totalCost} limitCost={limitCost} /> */}
+            <div className="gameBoard">
+                <svg width="100%" height="100%" viewBox={viewBox}>
+                    <Head totalCost={totalCost} limitCost={limitCost} Point={Point} totalNode={totalNode} stageId={currentStageIndex} />
+                    {edges.map(edge => (
+                        <Edge
+                            key={edge.id}
+                            fromNode={vertices.find(v => v.id === edge.from)}
+                            toNode={vertices.find(v => v.id === edge.to)}
+                            active={edge.active}
+                            cost={edge.cost}
+                            onClick={() => toggleEdgeActive(edge.id)}
+                        />
+                    ))}
+                    {vertices.map(vertex => vertex.type === 'node' ? (
+                        <Node key={vertex.id} x={vertex.x} y={vertex.y} active={vertex.active} />
+                    ) : (
+                        vertex.type === 'hub' ? (
+                            <Hub key={vertex.id} x={vertex.x} y={vertex.y} active={vertex.active} />
+                        ) : (
+                            <Terminal key={vertex.id} x={vertex.x} y={vertex.y} />
+                        )
+                    ))}
+                </svg>
+            </div>
+
+            {showOverlay && (
+                <div className="overlay">
+                    <button className="nextStageButton" onClick={goToNextStage}>次のステージへ</button>
+
+                    <button className="nextStageButton" onClick={resetCurrentStage}>再挑戦</button>
+                </div>
+            )}
+
         </div>
     );
 }

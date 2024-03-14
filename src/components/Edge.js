@@ -1,21 +1,28 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
-const Edge = ({ nodes, key, fromNode, toNode, active, onClick }) => {
+const Edge = ({ fromNode, toNode, active, cost, onClick }) => {
     const strokeColor = active ? 'black' : '#ddd'; // 有効なエッジは黒、そうでない場合は薄灰色
-    const strokeWidth = active ? '6' : '4'; // アクティブなエッジは少し太く表示
-    const hitAreaWidth = '10'; // 当たり判定用の線の太さを10に設定
+    const hitAreaWidth = '15'; // 当たり判定用の線の太さ
+
+    // エッジの中間点を計算
+    const midX = (fromNode.x + toNode.x) / 2;
+    const midY = (fromNode.y + toNode.y) / 2;
+
+
 
     return (
-        <>
-            {/* 見た目用のエッジ */}
+        <g onClick={onClick}>
+            {/* エッジの描画 */}
             <line
                 x1={fromNode.x}
                 y1={fromNode.y}
                 x2={toNode.x}
                 y2={toNode.y}
                 stroke={strokeColor}
-                strokeWidth={strokeWidth}
-                strokeLinecap="round" // 端点を丸くする
+                strokeWidth="4"
+                strokeLinecap="round"
+                onClick={onClick}
             />
             {/* 当たり判定用の透明なエッジ */}
             <line
@@ -23,13 +30,49 @@ const Edge = ({ nodes, key, fromNode, toNode, active, onClick }) => {
                 y1={fromNode.y}
                 x2={toNode.x}
                 y2={toNode.y}
-                stroke="rgba(0,0,0,0)" // 完全に透明
+                stroke="rgba(0,0,0,0)"
                 strokeWidth={hitAreaWidth}
-                strokeLinecap="round" // 端点を丸くする
+                strokeLinecap="round"
                 onClick={onClick}
             />
-        </>
+            {/* 数字の背景としての円 */}
+            <motion.circle
+                cx={midX}
+                cy={midY}
+                r="14"
+                fill="white"
+                stroke="white"
+                strokeWidth="1"
+                initial={{ scale: 1 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.2 }}
+                style={{
+                    pointerEvents: 'none',
+                    userSelect: 'none', // 文字列が選択されないようにする
+                }}
+                onClick={onClick}
+            />
+            {/* コストの値を表示 */}
+            <motion.text
+                x={midX}
+                y={midY}
+                fill="black"
+                fontSize="24"
+                textAnchor="middle"
+                dy=".3em"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+                style={{
+                    pointerEvents: 'none',
+                    userSelect: 'none', // 文字列が選択されないようにする
+                }}
+            >
+                {cost}
+            </motion.text>
+        </g>
     );
 }
+
 
 export default Edge;
